@@ -34,6 +34,16 @@ var playRound = (playerSelection, computerSelection) => {
     }
 };
 
+var gameWinLogic = (player, computer) => {
+    if (player > computer) {
+        console.log("Player Wins");
+    } else if (computer > player) {
+        console.log("Computer Wins");
+    } else {
+        console.log("Draw");
+    }
+};
+
 var gameStart = () => {
     var player = 0;
     var computer = 0;
@@ -43,8 +53,6 @@ var gameStart = () => {
         var computerSelection = computerPlay();
 
         var winState = playRound(playerSelection, computerSelection);
-
-        console.log(winState);
 
         if (winState == 0) {
             player++;
@@ -57,13 +65,7 @@ var gameStart = () => {
         console.log(`Player — ${player} : Computer — ${computer}`);
     }
 
-    if (player > computer) {
-        console.log("Player Wins");
-    } else if (computer > player) {
-        console.log("Computer Wins");
-    } else {
-        console.log("Draw");
-    }
+    gameWinLogic(player, computer);
 };
 
 gameStart();
