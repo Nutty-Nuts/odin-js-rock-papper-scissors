@@ -22,46 +22,47 @@ var translateSelection = (playerSelection) => {
 };
 
 function playRound(event) {
-    roundNumber++;
+    if (playerScore < 5 && computerScore < 5) {
+        roundNumber++;
 
-    const { select } = event.target.dataset;
-    playerSelection = select;
+        const { select } = event.target.dataset;
+        playerSelection = select;
 
-    computerSelection = computerPlay();
+        computerSelection = computerPlay();
 
-    const matchHistory = document.querySelector("#match-history");
-    const createLog = document.createElement("p");
+        const matchHistory = document.querySelector("#match-history");
+        const createLog = document.createElement("p");
 
-    const player = document.querySelector(".player");
-    const computer = document.querySelector(".computer");
+        const player = document.querySelector(".player");
+        const computer = document.querySelector(".computer");
 
-    console.log(
-        `Player Selection: ${playerSelection}, Computer Selection: ${computerSelection}`
-    );
+        console.log(
+            `Player Selection: ${playerSelection}, Computer Selection: ${computerSelection}`
+        );
 
-    if (
-        (playerSelection == "0" && computerSelection == "2") ||
-        (playerSelection == "1" && computerSelection == "0") ||
-        (playerSelection == "2" && computerSelection == "1")
-    ) {
-        console.log("Player Wins");
-        createLog.textContent = `${roundNumber}: Player Wins`;
-        playerScore++;
-        matchHistory.appendChild(createLog);
-        player.textContent = `Player: ${playerScore}`;
-    } else if ((playerSelection = computerSelection)) {
-        console.log("Draw");
-        createLog.textContent = `${roundNumber}: Draw`;
-        matchHistory.appendChild(createLog);
-    } else {
-        console.log("Computer Wins");
-        createLog.textContent = `${roundNumber}: Computer Wins`;
-        computerScore++;
-        matchHistory.appendChild(createLog);
-        computer.textContent = `Computer: ${computerScore}`;
+        if (
+            (playerSelection == "0" && computerSelection == "2") ||
+            (playerSelection == "1" && computerSelection == "0") ||
+            (playerSelection == "2" && computerSelection == "1")
+        ) {
+            console.log("Player Wins");
+            createLog.textContent = `${roundNumber}: Player Wins`;
+            playerScore++;
+            matchHistory.appendChild(createLog);
+            player.textContent = `Player: ${playerScore}`;
+        } else if ((playerSelection = computerSelection)) {
+            console.log("Draw");
+            createLog.textContent = `${roundNumber}: Draw`;
+            matchHistory.appendChild(createLog);
+        } else {
+            console.log("Computer Wins");
+            createLog.textContent = `${roundNumber}: Computer Wins`;
+            computerScore++;
+            matchHistory.appendChild(createLog);
+            computer.textContent = `Computer: ${computerScore}`;
+        }
+        gameWinLogic(playerScore, computerScore);
     }
-
-    gameWinLogic(playerScore, computerScore);
 }
 
 var gameWinLogic = (playerScore, computerScore) => {
