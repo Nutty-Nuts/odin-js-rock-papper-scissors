@@ -1,3 +1,10 @@
+const button = document.querySelector("#select-button");
+button.addEventListener("click", playRound);
+
+var roundNumber = 0;
+var playerScore = 0;
+var computerScore = 0;
+
 var computerPlay = () => {
     var numGen = Math.floor(Math.random() * 3);
 
@@ -14,58 +21,65 @@ var translateSelection = (playerSelection) => {
     }
 };
 
-var playRound = (playerSelection, computerSelection) => {
-    playerSelection = translateSelection(playerSelection);
+function playRound(event) {
+    if (playerScore < 5 && computerScore < 5) {
+        roundNumber++;
 
-    console.log(
-        `Player Selection: ${playerSelection}, Computer Selection: ${computerSelection}`
-    );
+        const { select } = event.target.dataset;
+        playerSelection = select;
 
-    if (
-        (playerSelection == 0 && computerSelection == 2) ||
-        (playerSelection == 1 && computerSelection == 0) ||
-        (playerSelection == 2 && computerSelection == 1)
-    ) {
-        return 0;
-    } else if (playerSelection == computerSelection) {
-        return 1;
-    } else {
-        return 2;
-    }
-};
+        computerSelection = computerPlay();
 
-var gameWinLogic = (player, computer) => {
-    if (player > computer) {
-        console.log("Player Wins");
-    } else if (computer > player) {
-        console.log("Computer Wins");
-    } else {
-        console.log("Draw");
-    }
-};
+        const matchHistory = document.querySelector("#match-history");
+        const createLog = document.createElement("p");
 
-var gameStart = () => {
-    var player = 0;
-    var computer = 0;
+        const player = document.querySelector(".player");
+        const computer = document.querySelector(".computer");
 
-    for (let i = 0; i < 5; i++) {
-        var playerSelection = prompt("Rock, Paper, Scissors...");
-        var computerSelection = computerPlay();
+        console.log(
+            `Player Selection: ${playerSelection}, Computer Selection: ${computerSelection}`
+        );
 
-        var winState = playRound(playerSelection, computerSelection);
-
-        if (winState == 0) {
-            player++;
-        } else if (winState == 2) {
-            computer++;
+        if (
+            (playerSelection == "0" && computerSelection == "2") ||
+            (playerSelection == "1" && computerSelection == "0") ||
+            (playerSelection == "2" && computerSelection == "1")
+        ) {
+            console.log("Player Wins");
+            createLog.textContent = `${roundNumber}: Player Wins`;
+            playerScore++;
+            matchHistory.appendChild(createLog);
+            player.textContent = `Player: ${playerScore}`;
+        } else if ((playerSelection = computerSelection)) {
+            console.log("Draw");
+            createLog.textContent = `${roundNumber}: Draw`;
+            matchHistory.appendChild(createLog);
         } else {
-            // Nothing Happens
+            console.log("Computer Wins");
+            createLog.textContent = `${roundNumber}: Computer Wins`;
+            computerScore++;
+            matchHistory.appendChild(createLog);
+            computer.textContent = `Computer: ${computerScore}`;
         }
-
-        console.log(`Player — ${player} : Computer — ${computer}`);
+        gameWinLogic(playerScore, computerScore);
     }
+}
 
-    gameWinLogic(player, computer);
+var gameWinLogic = (playerScore, computerScore) => {
+    const winner = document.querySelector("#winner");
+    const whoWins = document.createElement("p");
+    if (playerScore == 5 || computerScore == 5) {
+        if (playerScore > computerScore) {
+            whoWins.textContent = "Player Wins the Game";
+            winner.appendChild(whoWins);
+            console.log("Player Wins the Game");
+        } else if (computerScore > playerScore) {
+            whoWins.textContent = "Computer Wins the Game";
+            winner.appendChild(whoWins);
+            console.log("Computer Wins the Game");
+        } else {
+            console.log("Draw");
+        }
+    } else {
+    }
 };
-
-gameStart();
